@@ -145,7 +145,11 @@ const HeroSection = () => {
             <div className="absolute inset-0 m-10 rounded-full overflow-hidden glass border border-white/10">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/40 to-transparent opacity-30"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-5xl font-bold font-display text-gradient">MY</div>
+                <div className="relative flex flex-col items-center justify-center">
+                  <h2 className="text-2xl md:text-3xl font-bold font-display text-gradient">PORTFOLIO</h2>
+                  <div className="mt-1 text-sm text-accent/80 font-medium">Creative Designer</div>
+                  <div className="absolute -bottom-6 w-12 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+                </div>
               </div>
             </div>
           </motion.div>
