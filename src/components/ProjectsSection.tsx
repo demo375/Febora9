@@ -1,8 +1,10 @@
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight, Github, PlusCircle } from "lucide-react";
+import { Button } from "./ui/button";
 
+// Extended the projects array with more items
 const projects = [
   {
     title: "Immersive Portfolio",
@@ -29,6 +31,36 @@ const projects = [
     description: "An AI-powered analytics dashboard that transforms complex data into actionable insights through visualizations and machine learning.",
     tags: ["React", "D3.js", "TensorFlow.js", "Firebase"],
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    links: {
+      live: "#",
+      github: "#"
+    }
+  },
+  {
+    title: "Digital Art Marketplace",
+    description: "A platform for artists to sell digital art as NFTs, featuring a gallery view, auction system, and crypto payment integration.",
+    tags: ["React", "Solidity", "Web3.js", "IPFS"],
+    image: "https://images.unsplash.com/photo-1618005198919-d3d4b5a23cbb?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    links: {
+      live: "#",
+      github: "#"
+    }
+  },
+  {
+    title: "Fitness Tracking App",
+    description: "A comprehensive fitness app that tracks workouts, nutrition, and progress with personalized recommendations and social features.",
+    tags: ["React Native", "GraphQL", "Firebase", "HealthKit"],
+    image: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=2569&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    links: {
+      live: "#",
+      github: "#"
+    }
+  },
+  {
+    title: "Real-time Collaboration Tool",
+    description: "A collaborative workspace for teams with real-time document editing, video conferencing, and project management tools.",
+    tags: ["TypeScript", "Socket.io", "WebRTC", "Redis"],
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     links: {
       live: "#",
       github: "#"
@@ -103,6 +135,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0], index: n
 };
 
 const ProjectsSection = () => {
+  const [visibleProjects, setVisibleProjects] = useState(3);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -110,6 +143,12 @@ const ProjectsSection = () => {
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  
+  const showMoreProjects = () => {
+    setVisibleProjects(prev => 
+      prev + 3 > projects.length ? projects.length : prev + 3
+    );
+  };
 
   return (
     <section id="projects" ref={sectionRef} className="relative py-24">
@@ -141,10 +180,29 @@ const ProjectsSection = () => {
         </div>
 
         <div className="mt-24">
-          {projects.map((project, index) => (
+          {projects.slice(0, visibleProjects).map((project, index) => (
             <ProjectCard key={project.title} project={project} index={index} />
           ))}
         </div>
+        
+        {visibleProjects < projects.length && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mt-16 flex justify-center"
+          >
+            <Button 
+              onClick={showMoreProjects}
+              variant="outline" 
+              size="lg"
+              className="group bg-background/50 border-accent/30 hover:bg-accent/10 backdrop-blur-sm"
+            >
+              <span className="mr-2">View More Projects</span>
+              <PlusCircle className="h-4 w-4 transition-transform group-hover:rotate-90" />
+            </Button>
+          </motion.div>
+        )}
       </motion.div>
     </section>
   );
